@@ -1,4 +1,3 @@
-__author__ = 'hentenka'
 from routing import Routing
 
 def test_client():
@@ -13,9 +12,15 @@ def test_client():
 
 def test_url():
     api = test_client()
-    origin = {'lat': 57.3434, 'lon': 24.45454}
-    destination = {'lat': 55.3231, 'lon': 22.433}
-    api.routing(origin=origin, destination=destination, routing_mode='fastest', transport_mode='car', traffic_mode='enabled', resource='calculateroute')
+    #waypoints = {'waypoint0': {'lat': 60.2294, 'lon': 25.0278}, 'waypoint1': {'lat': 60.2294, 'lon': 25.0278}}
+
+    origin = {'lat': 60.2294, 'lon': 25.0278}
+    dest = {'lat': 60.1606, 'lon': 24.9407}
+    departure = "2015-01-14T08:00:00Z"
+
+    results = api.routing(origin = origin, destination=dest, departure = departure) #, routing_mode='fastest', transport_mode='car', traffic_mode='enabled', resource='calculateroute') #origin=origin, destination=destination
+
+    print results
 
 test_url()
 

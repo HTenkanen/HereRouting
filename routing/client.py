@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import requests
 import urlparse
-import sys
+#from routing import status
+#from routing import errors
 
 class Client(object):
     """
@@ -34,6 +35,7 @@ class Client(object):
         #url = urlparse.urljoin(urlparse.urljoin(self.base, url), ".json")
         url = "%s%s" %(urlparse.urljoin(self.base, url), ".json")
 
+
         # drop all None values and use defaults if not set
         parameters = {key: value for key, value in parameters.items() if
                       value is not None}
@@ -44,23 +46,22 @@ class Client(object):
             parameters["app_id"] = self.app_id
 
         raw_response = requests.get(url, params=parameters)
-        print raw_response.url
-
-        sys.exit()
         response = raw_response.json()
 
-        if response["status"] == status.OK and result_key is not None:
+        return response
+        """if response["status"] == "OK": #status.OK and result_key is not None:
             return response[result_key]
-        elif response["status"] == status.OK:
+        elif response["status"] == "OK":  #status.OK:
             del response["status"]
             return response
         else:
             response["url"] = raw_response.url
-            raise errors.EXCEPTION_MAPPING.get(
-                response["status"],
-                errors.GmapException
-            )(response)
-
+            raise Exception
+            #raise errors.EXCEPTION_MAPPING.get(
+            #    response["status"],
+            #    errors.HereException
+            #)(response)
+        """
     @staticmethod
     def require_latlon(location):
         if isinstance(location, dict):

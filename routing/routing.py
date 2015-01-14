@@ -3,16 +3,17 @@ from client import Client
 class Routing(Client):
     ROUTING_URL = 'routing/7.2/'
 
-    def routing(self, origin, destination, way_points=None, routing_mode=None, transport_mode=None, traffic_mode=None, resource=None):
+    def routing(self, origin=None, destination=None, departure=None, waypoints=None, routing_mode='fastest', transport_mode='car', traffic_mode='enabled', resource='calculateroute'):
         routing_url = "%s%s" % (self.ROUTING_URL, resource)
 
+        mode = "%s;%s;traffic:%s" % (routing_mode, transport_mode, traffic_mode)
+
         parameters = dict(
-            origin = self.require_latlon(origin),
-            destination = self.require_latlon(destination),
-            waypoints=way_points,
-            routing_mode=routing_mode,
-            transport_mode=transport_mode,
-            traffic_mode=traffic_mode
+            waypoint0 = "geo!%s" % self.require_latlon(origin),
+            waypoint1 = "geo!%s" % self.require_latlon(destination),
+            mode = mode,
+            departure = departure
+
         )
         return self._make_request(routing_url, parameters, "routes")
 
